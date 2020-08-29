@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using NoRealm.Phi.Metadata.Activator.Internal;
@@ -81,53 +83,71 @@ namespace NoRealm.Phi.Metadata.CodeGeneration
         }
 
         /// <inheritdoc />
-        public IndirectCall CreateInvokeMethod(MethodInfo methodInfo)
+        public IndirectCall CreateInvokeMethod(MethodInfo method)
         {
-            var method = CreateMethod($"method_{methodInfo.DeclaringType?.Name}_{methodInfo.Name}_{Guid.NewGuid():n}",
+            var dynMethod = CreateMethod($"method_{method.DeclaringType?.Name}_{method.Name}_{Guid.NewGuid():n}",
                 typeof(object),
                 typeof(object), typeof(object[]).MakeByRefType());
 
-            var @params = methodInfo.GetParameters();
+            var il = dynMethod.GetILGenerator();
+            var @params = method.GetParameters().OrderBy(e => e.Position).ToArray();
 
-            var il = method.GetILGenerator();
+            var refDic = new Dictionary<ParameterInfo, int>();
 
-            for (var i = 0; i < @params.Length; ++i)
+            for (int i = 0, localIdx = 0; i < @params.Length; ++i)
             {
-                var t = @params[i].ParameterType.IsByRef ? @params[i].ParameterType.GetElementType() : @params[i].ParameterType;
+                if (!@params[i].ParameterType.IsByRef) continue;
+                var paramType = @params[i].ParameterType.GetElementType();
+                if (paramType == typeof(object)) continue;
 
-                il.DeclareLocal(t);
-
-                il.ldArg(1)
-                  .ldRefInd()
-                  .ldcI4(i)
-                  .ldElemRef()
-                  .cast(t)
-                  .stLocal(i);
+                il.DeclareLocal(paramType);
+                il.ldArg(1).ldRefInd().ldcI4(i).ldElemRef().cast(paramType).stLocal(localIdx);
+                refDic.Add(@params[i], localIdx++);
             }
 
-            if (!methodInfo.IsStatic)
-                il.ldArg(0).cast(methodInfo.DeclaringType, true);
+            if (!method.IsStatic)
+                il.ldArg(0).cast(method.DeclaringType);
 
             for (var i = 0; i < @params.Length; ++i)
             {
-                if (@params[i].ParameterType.IsByRef)
-                    il.ldLocalAddr(i);
+                if (refDic.TryGetValue(@params[i], out var localIdx))
+                    il.ldLocalAddr(localIdx);
                 else
-                    il.ldLocal(i);
+                {
+                    var paramType = @params[i].ParameterType;
+
+                    if (!paramType.IsByRef)
+                        il.ldArg(1).ldRefInd().ldcI4(i).ldElemRef().cast(paramType);
+                    else
+                        il.ldArg(1).ldRefInd().ldcI4(i).ldElemAddr();
+                }
             }
 
-
-            if (methodInfo.IsVirtual)
-                il.callVirtual(methodInfo);
+            if (method.IsVirtual)
+                il.callVirtual(method);
             else
-                il.call(methodInfo);
+                il.call(method);
 
-            if (methodInfo.ReturnParameter.ParameterType == typeof(void))
+            if (refDic.Count != 0)
+            {
+                foreach (var (param, localIdx) in refDic)
+                {
+                    var paramType = param.ParameterType.GetElementType();
+
+                    il.ldArg(1).ldRefInd().ldcI4(param.Position).ldLocal(localIdx);
+                    if (paramType.IsValueType) il.box(paramType);
+                    il.stElemRef();
+                }
+            }
+
+            if (method.ReturnParameter.ParameterType == typeof(void))
                 il.ldNull();
+            else if (method.ReturnParameter.ParameterType.IsValueType)
+                il.box(method.ReturnParameter.ParameterType);
 
             il.ret();
 
-            return method.ToDelegate<IndirectCall>();
+            return dynMethod.ToDelegate<IndirectCall>();
         }
 
         private static void DefinePropertyGetter(ILGenerator il, PropertyInfo property)

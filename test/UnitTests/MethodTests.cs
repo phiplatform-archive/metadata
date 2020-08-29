@@ -35,5 +35,42 @@ namespace NoRealm.Phi.Metadata.Test.UnitTests
             Assert.Equal(10, result);
         }
 
+        [Fact]
+        public void ExecuteMethodOneArgsIsValid()
+        {
+            var user = new User();
+
+            var method = userClass.GetMethod(nameof(User.GetOldAge)).First(e => e.Parameters.Count == 1);
+            var context = method.CreateInvokeContext(user, 12);
+            var result = method.Invoke(context);
+
+            Assert.Equal(17, result);
+        }
+
+        [Fact]
+        public void ExecuteMethodWithOutReferenceTypeParamIsValid()
+        {
+            var user = new User();
+
+            var method = userClass.GetMethod(nameof(User.GetName)).First();
+            var context = method.CreateInvokeContext(user, string.Empty);
+            var result = method.Invoke(context);
+
+            Assert.Null(result);
+            Assert.Equal(nameof(User), context[0]);
+        }
+
+        [Fact]
+        public void ExecuteMethodWithOutValueTypeParamIsValid()
+        {
+            var user = new User();
+
+            var method = userClass.GetMethod(nameof(User.GetAge)).First();
+            var context = method.CreateInvokeContext(user, 0);
+            var result = method.Invoke(context);
+
+            Assert.Equal(int.MaxValue, result);
+            Assert.Equal(7, context[0]);
+        }
     }
 }

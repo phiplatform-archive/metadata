@@ -68,12 +68,23 @@ namespace NoRealm.Phi.Metadata.Test.Data
 
         public int GetOldAge(int age)
         {
-            return age + 10;
+            return age + 5;
         }
 
         public int GetOldAge()
         {
             return 10;
+        }
+
+        public void GetName(out string name)
+        {
+            name = nameof(User);
+        }
+
+        public int GetAge(out int age)
+        {
+            age = 7;
+            return int.MaxValue;
         }
     }
 }

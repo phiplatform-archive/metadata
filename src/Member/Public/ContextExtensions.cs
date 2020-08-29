@@ -59,7 +59,10 @@ namespace NoRealm.Phi.Metadata.Extensions
 
             for (var i = 0; i < args.Length; ++i)
             {
-                if (!member.Parameters[i].ContentType.IsInstanceOfType(args[i]))
+                var paramType = member.Parameters[i].ContentType;
+                if (paramType.IsByRef) paramType = paramType.GetElementType();
+
+                if (!paramType.IsInstanceOfType(args[i]))
                     throw new ArgumentException($"argument at position {i} has invalid type for parameter at same position.");
             }
 

@@ -32,18 +32,6 @@ namespace NoRealm.Phi.Metadata.CodeGeneration
         }
 
         /// <summary>
-        /// initialize value type
-        /// </summary>
-        /// <param name="il"><see cref="ILGenerator"/> instance to emit <see cref="OpCode"/></param>
-        /// <param name="type">value type</param>
-        /// <returns><see cref="ILGenerator"/> instance</returns>
-        public static ILGenerator initObj(this ILGenerator il, Type type)
-        {
-            il.Emit(OpCodes.Initobj, type);
-            return il;
-        }
-
-        /// <summary>
         /// execute reference type constructor, i.e. creating new object
         /// </summary>
         /// <param name="il"><see cref="ILGenerator"/> instance to emit <see cref="OpCode"/></param>
@@ -82,41 +70,6 @@ namespace NoRealm.Phi.Metadata.CodeGeneration
                     break;
             }
 
-            return il;
-        }
-
-        /// <summary>
-        /// load number of arguments into stack
-        /// </summary>
-        /// <param name="il"><see cref="ILGenerator"/> instance to emit <see cref="OpCode"/></param>
-        /// <param name="count">number of arguments</param>
-        /// <returns><see cref="ILGenerator"/> instance</returns>
-        public static ILGenerator ldArgC(this ILGenerator il, int count)
-        {
-            if (count >= 1)
-                il.Emit(OpCodes.Ldarg_0);
-
-            if (count >= 2)
-                il.Emit(OpCodes.Ldarg_1);
-
-            if (count >= 3)
-                il.Emit(OpCodes.Ldarg_2);
-
-            if (count >= 4)
-                il.Emit(OpCodes.Ldarg_3);
-
-            return il;
-        }
-
-        /// <summary>
-        /// push argument address of specified index into the stack
-        /// </summary>
-        /// <param name="il"><see cref="ILGenerator"/> instance to emit <see cref="OpCode"/></param>
-        /// <param name="index">argument index</param>
-        /// <returns><see cref="ILGenerator"/> instance</returns>
-        public static ILGenerator ldArgPtr(this ILGenerator il, int index)
-        {
-            il.Emit(OpCodes.Ldarga, index);
             return il;
         }
 
@@ -350,6 +303,28 @@ namespace NoRealm.Phi.Metadata.CodeGeneration
         public static ILGenerator ldLocalAddr(this ILGenerator il, int index)
         {
             il.Emit(OpCodes.Ldloca_S, index);
+            return il;
+        }
+
+        /// <summary>
+        /// load address of array element into stack
+        /// </summary>
+        /// <param name="il"><see cref="ILGenerator"/> instance to emit <see cref="OpCode"/></param>
+        /// <returns><see cref="ILGenerator"/> instance</returns>
+        public static ILGenerator ldElemAddr(this ILGenerator il)
+        {
+            il.Emit(OpCodes.Ldelema);
+            return il;
+        }
+
+        /// <summary>
+        /// set array element value from top of the stack
+        /// </summary>
+        /// <param name="il"><see cref="ILGenerator"/> instance to emit <see cref="OpCode"/></param>
+        /// <returns><see cref="ILGenerator"/> instance</returns>
+        public static ILGenerator stElemRef(this ILGenerator il)
+        {
+            il.Emit(OpCodes.Stelem_Ref);
             return il;
         }
     }
