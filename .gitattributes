@@ -1,0 +1,11 @@
+* text=auto
+
+*.txt text
+*.cs text
+*.sln text
+*.csproj text
+*.props text
+*.config text
+
+
+*.png binary

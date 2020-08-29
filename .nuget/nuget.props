@@ -1,0 +1,29 @@
+<Project>
+  <PropertyGroup>
+    <Title>NoRealm.Phi.Metadata</Title>
+    <Version>0.1.0</Version>
+    <Authors>Muhammad Aladdin</Authors>
+    <Company>NoRealm</Company>
+    <Product>PhiPlatform</Product>
+    <Copyright>© PhiPlatform 2020</Copyright>
+    <PackageIcon>.nuget\phi.png</PackageIcon>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseFile>.nuget\LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://phiplatform.com/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/phiplatform/metadata/</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageDescription>An extensible library for managing types metadata</PackageDescription>
+    <PackageTags>phi metadata</PackageTags>
+    <PackageReleaseNotes>
+Release 0.1.0
+==========================
+
+Initial Release
+    </PackageReleaseNotes>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="../.nuget/phi.png" Pack="true" PackagePath="\.nuget" Visible="false" />
+    <None Include="../LICENSE" Pack="true" PackagePath="\.nuget" Visible="false" />
+    <None Include="../.nuget/ReleaseNotes.txt" Pack="true" PackagePath="\.nuget" Visible="false" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,6 @@
+﻿this is the release notes for NoRealm.Phi.Metadata library
+
+Release 0.1.0
+==========================
+
+Initial Release

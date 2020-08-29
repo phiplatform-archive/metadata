@@ -1,0 +1,16 @@
+<Project>
+  <PropertyGroup>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <BaseIntermediateOutputPath>$(SolutionDir)..\build\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
+    <OutputPath>$(SolutionDir)..\build\bin\$(Configuration)\</OutputPath>
+    <LangVersion>8.0</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <Import Project="../.nuget/nuget.props" />
+</Project>
