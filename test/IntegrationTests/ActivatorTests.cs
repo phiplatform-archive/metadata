@@ -9,18 +9,17 @@ namespace NoRealm.Phi.Metadata.Test.IntegrationTests
     public class ActivatorTests : IClassFixture<StandardFlow>
     {
         private readonly IActivator activator;
-        private readonly Type userType = typeof(User);
 
         public ActivatorTests(StandardFlow standardFlow)
         {
             activator = (standardFlow as IRequirement).Activator;
-            activator.Prepare(userType);
+            activator.Prepare(User.Type);
         }
 
         [Fact]
         public void CreateInstanceNoArgs()
         {
-            var instance = activator.CreateInstance(userType);
+            var instance = activator.CreateInstance(User.Type);
             Assert.NotNull(instance);
         }
 
@@ -29,7 +28,7 @@ namespace NoRealm.Phi.Metadata.Test.IntegrationTests
         {
             var id = Guid.NewGuid();
 
-            var instance = (User)activator.CreateInstance(userType, id);
+            var instance = (User)activator.CreateInstance(User.Type, id);
             Assert.NotNull(instance);
             Assert.Equal(id, instance.userId);
         }
@@ -40,7 +39,7 @@ namespace NoRealm.Phi.Metadata.Test.IntegrationTests
             var id = Guid.NewGuid();
             var name = "testName";
 
-            var instance = (User)activator.CreateInstance(userType, id, name);
+            var instance = (User)activator.CreateInstance(User.Type, id, name);
             Assert.NotNull(instance);
             Assert.Equal(id, instance.userId);
             Assert.Equal(name, instance.name);

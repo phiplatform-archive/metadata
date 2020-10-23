@@ -11,17 +11,17 @@ namespace NoRealm.Phi.Metadata.Test.Fixture
         /// <summary>
         /// get the metadata manager instance
         /// </summary>
-        public IMetadataManager MetadataManager => GetInstance<IMetadataManager>();
+        IMetadataManager MetadataManager => GetInstance<IMetadataManager>();
 
         /// <summary>
         /// get root member factory
         /// </summary>
-        public IRootMemberFactory RootMemberFactory => GetInstance<IRootMemberFactory>();
+        IRootMemberFactory RootMemberFactory => GetInstance<IRootMemberFactory>();
 
         /// <summary>
         /// get activator
         /// </summary>
-        public IActivator Activator => GetInstance<IActivator>();
+        IActivator Activator => GetInstance<IActivator>();
 
         /// <summary>
         /// get an instance

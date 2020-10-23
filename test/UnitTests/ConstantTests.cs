@@ -8,7 +8,7 @@ namespace NoRealm.Phi.Metadata.Test.UnitTests
     {
         private readonly IConstant constant =
             (IConstant) new DefaultMemberFactory(new MemberConfiguration(true)).CreateMember(
-                typeof(User).GetField(nameof(User.MaxUsers)));
+                User.Type.GetField(nameof(User.MaxUsers)));
 
         [Fact]
         public void ConstValueIsCorrect()

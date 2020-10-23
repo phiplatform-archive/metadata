@@ -8,40 +8,39 @@ namespace NoRealm.Phi.Metadata.Test.UnitTests
     public class MemberFactoryTests
     {
         private readonly IMemberFactory memberFactory = new DefaultMemberFactory(new MemberConfiguration(true));
-        private readonly Type userType = typeof(User);
 
         [Fact]
         public void MemberIsField()
         {
-            var field = userType.GetField(nameof(User.userId));
+            var field = User.Type.GetField(nameof(User.userId));
             Assert.IsAssignableFrom<IField>(memberFactory.CreateMember(field));
         }
 
         [Fact]
         public void MemberIsConstant()
         {
-            var @const = userType.GetField(nameof(User.MaxUsers));
+            var @const = User.Type.GetField(nameof(User.MaxUsers));
             Assert.IsAssignableFrom<IConstant>(memberFactory.CreateMember(@const));
         }
 
         [Fact]
         public void MemberIsProperty()
         {
-            var property = userType.GetProperties()[0];
+            var property = User.Type.GetProperties()[0];
             Assert.IsAssignableFrom<IProperty>(memberFactory.CreateMember(property));
         }
 
         [Fact]
         public void MemberIsMethod()
         {
-            var method = userType.GetMethod(nameof(User.OnUserCreated));
+            var method = User.Type.GetMethod(nameof(User.OnUserCreated));
             Assert.IsAssignableFrom<IMethod>(memberFactory.CreateMember(method));
         }
 
         [Fact]
         public void MemberIsConstructor()
         {
-            var constructor = userType.GetConstructors()[0];
+            var constructor = User.Type.GetConstructors()[0];
             Assert.IsAssignableFrom<IConstructor>(memberFactory.CreateMember(constructor));
         }
 
@@ -50,7 +49,7 @@ namespace NoRealm.Phi.Metadata.Test.UnitTests
         {
             Assert.Throws<NotSupportedException>(() =>
             {
-                memberFactory.CreateMember(userType.GetEvents()[0]);
+                memberFactory.CreateMember(User.Type.GetEvents()[0]);
             });
         }
     }

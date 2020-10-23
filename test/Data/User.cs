@@ -2,7 +2,7 @@
 
 namespace NoRealm.Phi.Metadata.Test.Data
 {
-    public class User
+    public partial class User
     {
         public const int MaxUsers = 10;
         public readonly int SomeValue = 20;
@@ -84,6 +84,11 @@ namespace NoRealm.Phi.Metadata.Test.Data
         public int GetAge(out int age)
         {
             age = 7;
+            return int.MaxValue;
+        }
+
+        public int GetAge(int age)
+        {
             return int.MaxValue;
         }
     }

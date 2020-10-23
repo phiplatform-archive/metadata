@@ -19,7 +19,7 @@ namespace NoRealm.Phi.Metadata.Test.IntegrationTests
         [Fact]
         public void TypeIsClass()
         {
-            Assert.IsAssignableFrom<IClass>(rootMemberFactory.CreateRootMember(typeof(User)));
+            Assert.IsAssignableFrom<IClass>(rootMemberFactory.CreateRootMember(User.Type));
         }
 
         [Fact]

@@ -10,18 +10,17 @@ namespace NoRealm.Phi.Metadata.Test.UnitTests
     public class MemberGroupProviderTests
     {
         private readonly IMemberGroupProvider memberGroupProvider = new DefaultMemberGroupProvider();
-        private readonly Type userType = typeof(User);
 
         [Fact]
         public void TypeIsClass()
         {
-            Assert.Same(Class, GetMemberGroup(userType));
+            Assert.Same(Class, GetMemberGroup(User.Type));
         }
 
         [Fact]
         public void TypeIsEvent()
         {
-            var @event = userType.GetEvents()[0];
+            var @event = User.Type.GetEvents()[0];
 
             Assert.Same(Event, GetMemberGroup(@event));
         }
@@ -29,35 +28,35 @@ namespace NoRealm.Phi.Metadata.Test.UnitTests
         [Fact]
         public void TypeIsMethod()
         {
-            var method = userType.GetMethods()[0];
+            var method = User.Type.GetMethods()[0];
             Assert.Same(Method, GetMemberGroup(method));
         }
 
         [Fact]
         public void TypeIsConstant()
         {
-            var @const = userType.GetField(nameof(User.MaxUsers));
+            var @const = User.Type.GetField(nameof(User.MaxUsers));
             Assert.Same(Constant, GetMemberGroup(@const));
         }
 
         [Fact]
         public void TypeIsConstructor()
         {
-            var constructor = userType.GetConstructors()[0];
+            var constructor = User.Type.GetConstructors()[0];
             Assert.Same(Constructor, GetMemberGroup(constructor));
         }
 
         [Fact]
         public void TypeIsProperty()
         {
-            var property = userType.GetProperties()[0];
+            var property = User.Type.GetProperties()[0];
             Assert.Same(Property, GetMemberGroup(property));
         }
 
         [Fact]
         public void TypeIsField()
         {
-            var field = userType.GetField(nameof(User.dob));
+            var field = User.Type.GetField(nameof(User.dob));
             Assert.Same(Field, GetMemberGroup(field));
         }
 

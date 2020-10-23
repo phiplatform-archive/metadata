@@ -9,24 +9,23 @@ namespace NoRealm.Phi.Metadata.Test.UnitTests
     public class MembersProviderTest
     {
         private readonly IMembersProvider membersProvider = new DefaultMembersProvider();
-        private readonly Type userType = typeof(User);
 
         [Fact]
         public void PublicPropertiesAreValid()
         {
-            Assert.Equal(userType.GetProperties().Length, GetCount<PropertyInfo>());
+            Assert.Equal(User.Type.GetProperties().Length, GetCount<PropertyInfo>());
         }
 
         [Fact]
         public void PublicConstructorsAreValid()
         {
-            Assert.Equal(userType.GetConstructors().Length, GetCount<ConstructorInfo>());
+            Assert.Equal(User.Type.GetConstructors().Length, GetCount<ConstructorInfo>());
         }
 
         [Fact]
         public void PublicFieldsAreValid()
         {
-            Assert.Equal(userType.GetFields().Length, GetCount<FieldInfo>());
+            Assert.Equal(User.Type.GetFields().Length, GetCount<FieldInfo>());
         }
 
         //[Fact]
@@ -38,12 +37,12 @@ namespace NoRealm.Phi.Metadata.Test.UnitTests
         [Fact]
         public void PublicMethodsAreValid()
         {
-            Assert.Equal(userType.GetMethods().Count(e => !e.IsSpecialName), GetCount<MethodInfo>());
+            Assert.Equal(User.Type.GetMethods().Count(e => !e.IsSpecialName), GetCount<MethodInfo>());
         }
 
         private int GetCount<T>() where T : MemberInfo
         {
-            return membersProvider.GetMembers(userType).Count(e => e is T);
+            return membersProvider.GetMembers(User.Type).Count(e => e is T);
         }
     }
 }

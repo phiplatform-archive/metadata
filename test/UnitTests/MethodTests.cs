@@ -13,7 +13,7 @@ namespace NoRealm.Phi.Metadata.Test.UnitTests
 
         public MethodTests(StandardFlow standardFlow)
         {
-            userClass = (IClass)(standardFlow as IRequirement).RootMemberFactory.CreateRootMember(typeof(User));
+            userClass = (IClass)(standardFlow as IRequirement).RootMemberFactory.CreateRootMember(User.Type);
         }
 
         [Fact]

@@ -1,5 +1,4 @@
 ﻿using NoRealm.Phi.Metadata.Builder;
-using NoRealm.Phi.Metadata.Builder.Internal;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
